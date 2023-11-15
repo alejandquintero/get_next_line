@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:28 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/15 00:00:23 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/15 21:26:21 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@ int	analyze_str(char *str)
 
 char	*get_next_line(int fd)
 {
-	char 		*readed;
+	static char 		*readed;
 	char		*aux;
 	char		*line;
 	char		buffer[BUFFER_SIZE];
 	int			end;
 	ssize_t		bytes;
 
+	printf("antes-- %s \n", readed);
 	ft_bzero(buffer, BUFFER_SIZE + 1);
 	bytes = read(fd, buffer, BUFFER_SIZE);
 	if (bytes == -1 || bytes == 0)
@@ -84,13 +85,13 @@ int	main(void)
 	int		fd;
 	char	*ptr;
 
-	fd = open("files/2.txt", O_RDONLY);
+	fd = open("files/3.txt", O_RDONLY);
 	if(fd == ERROR)
 		return(1);
 	ptr = get_next_line(fd);
 	while (ptr != NULL)
 	{
-		printf("%s", ptr);
+		// printf("%s", ptr);
 		free(ptr);
 		ptr = get_next_line(fd);
 	}
