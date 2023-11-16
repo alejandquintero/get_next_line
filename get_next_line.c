@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:28 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/16 19:14:13 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/16 21:43:35 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ int	analyze_str(char *str)
 		i++;
 	}
 	return (-1);
+}
+
+char	*clean_content(char *content_readed, int end)
+{
+	char	*new_content;
+	
+	new_content = ft_substr(content_readed, end + 1,  ft_strlen(content_readed) - (end + 1));
+	free(content_readed);
+	if(!new_content)
+		return (NULL);
+	return (new_content);
 }
 
 char	*next_reading(int fd, char *content_readed)
@@ -48,8 +59,7 @@ char	*next_reading(int fd, char *content_readed)
 	free(buffer);
 	if (bytes == 0)
 		return(content_readed);
-	if (bytes == -1)
-		return (NULL);
+	return (NULL);
 }
 
 char	*get_next_line(int fd)
@@ -62,22 +72,17 @@ char	*get_next_line(int fd)
 	end = analyze_str(content_readed);
 	while (end == -1)
 	{
-		ft_bzero(buffer, BUFFER_SIZE + 1);
-		bytes = read(fd, buffer, BUFFER_SIZE);
-		if (bytes == -1 || bytes == 0)
-		{
-			if (bytes == 0)
-				return (readed);
-			if (readed != NULL)
-				free(readed);				
-			return (NULL);
-		}
-		readed = ft_strjoin(readed, buffer);
-		end = analyze_str(readed);
+		content_readed = next_reading(fd, content_readed);
+		end = analyze_str(content_readed);
 	}
 	line = malloc((end + 2) * sizeof(char));
-	ft_strlcpy(line, readed, (end + 2));
-	readed = ft_substr(readed, end + 1,  ft_strlen(readed) - (end + 1));
+	if (!line)
+	{
+		free(content_readed);
+		return (NULL);
+	}
+	ft_strlcpy(line, content_readed, (end + 2));
+	content_readed = clean_content(content_readed, end);
 	return (line);
 }
 
