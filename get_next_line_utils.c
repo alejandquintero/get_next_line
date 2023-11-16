@@ -6,11 +6,13 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:25 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/14 23:36:22 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:54:25 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+#include <stdio.h>
 
 size_t	ft_strlen(const char *s)
 {
@@ -79,12 +81,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	total_len;
 	char	*s3;
 
+	if (!s1)
+	{
+		s1 = ft_strdup("");
+		if (!s1)
+			return (NULL);
+	}
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s3 = malloc(total_len * sizeof(char));
 	if (!s3)
 		return (NULL);
 	ft_strlcpy(s3, s1, total_len);
 	ft_strlcat(s3, s2, total_len);
+	free((void *)s1);
+	free((void *)s2);
 	return (s3);
 }
 

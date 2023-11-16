@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:28 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/15 21:26:21 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/16 19:14:13 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,56 +26,58 @@ int	analyze_str(char *str)
 		i++;
 	}
 	return (-1);
-}	
+}
+
+char	*next_reading(int fd, char *content_readed)
+{
+	ssize_t bytes;
+	char	*buffer;
+	char	*new_content;
+
+	buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	bytes = read(fd, buffer, BUFFER_SIZE);
+	if (bytes > 0)
+	{
+		new_content = ft_strjoin(content_readed, buffer);
+		if(!new_content)
+			return (NULL);
+		return (new_content);
+	}
+	free(buffer);
+	if (bytes == 0)
+		return(content_readed);
+	if (bytes == -1)
+		return (NULL);
+}
 
 char	*get_next_line(int fd)
 {
-	static char 		*readed;
-	char		*aux;
-	char		*line;
-	char		buffer[BUFFER_SIZE];
-	int			end;
-	ssize_t		bytes;
+	static char 		*content_readed;
+	char				*line;
+	int					end;
 
-	printf("antes-- %s \n", readed);
-	ft_bzero(buffer, BUFFER_SIZE + 1);
-	bytes = read(fd, buffer, BUFFER_SIZE);
-	if (bytes == -1 || bytes == 0)
-		return (NULL);
-	readed = ft_strdup(buffer);
-	end = analyze_str(readed);	
-	ft_bzero(buffer, BUFFER_SIZE + 1);
+	content_readed = next_reading(fd, content_readed);
+	end = analyze_str(content_readed);
 	while (end == -1)
 	{
 		ft_bzero(buffer, BUFFER_SIZE + 1);
 		bytes = read(fd, buffer, BUFFER_SIZE);
 		if (bytes == -1 || bytes == 0)
 		{
-			printf("%s", readed);
-			if (aux != NULL)
-				free(aux);
 			if (bytes == 0)
 				return (readed);
 			if (readed != NULL)
 				free(readed);				
 			return (NULL);
 		}
-		aux = ft_strdup((const char *)readed);
-		if (readed != NULL)
-			free(readed);
-		readed = ft_strjoin(aux, buffer);
-		if (aux != NULL)
-			free(aux);
+		readed = ft_strjoin(readed, buffer);
 		end = analyze_str(readed);
 	}
 	line = malloc((end + 2) * sizeof(char));
 	ft_strlcpy(line, readed, (end + 2));
-	aux = ft_strdup((const char *)readed);
-	if (readed != NULL)
-		free(readed);
-	readed = ft_substr(aux, end + 1,  ft_strlen(aux) - (end + 1));
-	if (aux != NULL)
-		free(aux);
+	readed = ft_substr(readed, end + 1,  ft_strlen(readed) - (end + 1));
 	return (line);
 }
 
@@ -91,10 +93,11 @@ int	main(void)
 	ptr = get_next_line(fd);
 	while (ptr != NULL)
 	{
-		// printf("%s", ptr);
+		printf("%s", ptr);
 		free(ptr);
 		ptr = get_next_line(fd);
 	}
+	printf("%s", ptr);
 	close(fd);
 	return (0);
 }
