@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:25 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/16 20:58:18 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/18 00:13:41 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		if (!s1)
 			return (NULL);
 	}
-	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	total_len = ft_strlen(s1) + ft_strlen(s2)  + 1;
 	s3 = malloc(total_len * sizeof(char));
 	if (!s3)
 		return (NULL);
@@ -110,6 +110,17 @@ char	*ft_strdup(const char *s1)
 	s2 = ft_memcpy(s2, s1, len);
 	s2[len - 1] = '\0';
 	return (s2);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*mem;
+
+	mem = malloc(count * size);
+	if (!mem)
+		return (NULL);
+	ft_bzero(mem, (count * size));
+	return (mem);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
