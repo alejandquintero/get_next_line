@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:25 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/18 18:18:15 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/18 23:54:25 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s3 = malloc(total_len * sizeof(char));
 	if (!s3)
-		return (NULL);
+		return (reset_readed(&s1));
 	ft_strlcpy(s3, s1, total_len);
 	ft_strlcat(s3, s2, total_len);
 	free((void *)s1);
@@ -99,14 +99,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	if (start >= ft_strlen(s))
-	{
-		s2 = malloc(1 * sizeof(char));
-		if (!s2)
-			return (NULL);
-		s2[0] = '\0';
-		return (s2);
-	}
+	// if (start >= ft_strlen(s))
+	// {
+	// 	s2 = malloc(1 * sizeof(char));
+	// 	if (!s2)
+	// 		return (NULL);
+	// 	s2[0] = '\0';
+	// 	return (s2);
+	// }
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
 	s2 = malloc((len + 1) * sizeof(char));
