@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:14 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/17 22:55:12 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/18 16:57:39 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,12 @@
 # include <unistd.h>
 # include <string.h>
 
-int		analyze_str(char *str);
 char	*get_next_line(int fd);
-char	*ft_strdup(const char *s1);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t count, size_t size);
-
+char	*ft_strchr(const char *s, int c);
 
 #endif
