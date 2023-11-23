@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:14 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/18 23:54:32 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:13:37 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,13 @@
 # include <string.h>
 
 char	*get_next_line(int fd);
-char	*next_reading(int fd, char *readed);
+char	*next_reading(int fd, char *readed, char *buffer);
 char	*build_and_clean(char **readed);
 char	*reset_readed(char **readed);
-
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:25 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/18 23:54:25 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/23 22:15:43 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	dstlen;
-	size_t	i;
-
-	dstlen = ft_strlen(dst);
-	if (dstsize > dstlen)
-	{
-		i = 0;
-		while ((dstlen + i) < (dstsize - 1) && src[i] != '\0')
-		{
-			dst[dstlen + i] = src[i];
-			i++;
-		}
-		dst[i + dstlen] = '\0';
-		return (dstlen + ft_strlen(src));
-	}
-	return (ft_strlen(src) + dstsize);
-}
-
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
@@ -74,22 +54,27 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	total_len;
+	char	aux[1];
 	char	*s3;
+	int		i;
+	int		j;
 
 	if (!s1)
 	{
-		s1 = malloc(1 * sizeof(char));
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
+		aux[0] = '\0';
+		s1 = aux;
 	}
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s3 = malloc(total_len * sizeof(char));
 	if (!s3)
-		return (reset_readed(&s1));
-	ft_strlcpy(s3, s1, total_len);
-	ft_strlcat(s3, s2, total_len);
-	free((void *)s1);
+		return (NULL);
+	i = -1;
+	while (s1[++i] != '\0')
+		s3[i] = s1[i];
+	j = -1;
+	while (s2[++j] != '\0')
+		s3[i + j] = s2[j];
+	s3[i + j] = '\0';
 	return (s3);
 }
 
@@ -99,20 +84,19 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	if (!s)
 		return (NULL);
-	// if (start >= ft_strlen(s))
-	// {
-	// 	s2 = malloc(1 * sizeof(char));
-	// 	if (!s2)
-	// 		return (NULL);
-	// 	s2[0] = '\0';
-	// 	return (s2);
-	// }
+	if (start >= ft_strlen(s))
+	{
+		s2 = malloc(1 * sizeof(char));
+		if (!s2)
+			return (NULL);
+		s2[0] = '\0';
+		return (s2);
+	}
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
 	s2 = malloc((len + 1) * sizeof(char));
 	if (!s2)
 		return (NULL);
 	ft_strlcpy(s2, s + start, len + 1);
-	free((void *)s);
 	return (s2);
 }
