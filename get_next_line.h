@@ -6,13 +6,14 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:14 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/23 20:13:37 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:29:05 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # define ERROR -1
+# define SUCCESS 0
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
@@ -20,15 +21,15 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <string.h>
 
 char	*get_next_line(int fd);
-char	*next_reading(int fd, char *readed, char *buffer);
-char	*build_and_clean(char **readed);
-char	*reset_readed(char **readed);
+char	*read_next_line(int fd, char *cache, char *buffer);
+char	*build_line(char **cache);
+char	*reset_cache(char **cache);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
+int		clean_cache(char **cache, size_t len, char *nl_ptr);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
 

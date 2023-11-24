@@ -6,66 +6,65 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:04:28 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/23 22:29:02 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:32:43 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-char	*reset_readed(char **readed)
+char	*reset_cache(char **cache)
 {
-	if (*readed)
-		free(*readed);
-	*readed = NULL;
+	if (*cache)
+		free(*cache);
+	*cache = NULL;
 	return (NULL);
 }
 
-int	clean(char **readed, size_t len, char *new_line_ptr)
+int	clean_cache(char **cache, size_t len, char *nl_ptr)
 {
 	char	*aux;
 
-	if (!new_line_ptr)
-		reset_readed(&(*readed));
+	if (!nl_ptr)
+		reset_cache(&(*cache));
 	else
 	{
-		aux = *readed;
-		*readed = ft_substr(*readed, len - 1, ft_strlen(new_line_ptr) - 1);
+		aux = *cache;
+		*cache = ft_substr(*cache, len - 1, ft_strlen(nl_ptr) - 1);
 		free(aux);
-		if (!*readed)
-			return (-1);
-		else if (ft_strlen(*readed) == 0)
-			reset_readed(&(*readed));
+		if (!*cache)
+			return (ERROR);
+		else if (ft_strlen(*cache) == 0)
+			reset_cache(&(*cache));
 	}
-	return (1);
+	return (SUCCESS);
 }
 
-char	*build(char **readed)
+char	*build_line(char **cache)
 {
 	char	*line;
-	char	*aux;
-	int		res;
+	char	*nl_ptr;
+	int		result;
 	size_t	len;
 
-	aux = ft_strchr(*readed, '\n');
-	if (!aux)
-		len = ft_strlen(*readed) + 1;
+	nl_ptr = ft_strchr(*cache, '\n');
+	if (!nl_ptr)
+		len = ft_strlen(*cache) + 1;
 	else
-		len = (aux - *readed) + 2;
+		len = (nl_ptr - *cache) + 2;
 	line = malloc(len * sizeof(char));
 	if (!line)
-		return (reset_readed(&(*readed)));
-	ft_strlcpy(line, *readed, len);
-	res = clean(readed, len, aux);
-	if (res == -1)
+		return (reset_cache(&(*cache)));
+	ft_strlcpy(line, *cache, len);
+	result = clean_cache(cache, len, nl_ptr);
+	if (result == ERROR)
 	{
 		free (line);
-		return (reset_readed(&(*readed)));
+		return (reset_cache(&(*cache)));
 	}
 	return (line);
 }
 
-char	*next_reading(int fd, char *readed, char *buffer)
+char	*read_next_line(int fd, char *cache, char *buffer)
 {
 	ssize_t	bytes;
 	char	*aux;
@@ -77,38 +76,38 @@ char	*next_reading(int fd, char *readed, char *buffer)
 		if (bytes > 0)
 		{
 			buffer[bytes] = '\0';
-			aux = readed;
-			readed = ft_strjoin(readed, buffer);
+			aux = cache;
+			cache = ft_strjoin(cache, buffer);
 			free(aux);
-			if (!readed)
-				return (reset_readed(&readed));
+			if (!cache)
+				return (reset_cache(&cache));
 		}
 	}
-	if (bytes == -1)
-		return (reset_readed(&readed));
-	return (readed);
+	if (bytes == ERROR)
+		return (reset_cache(&cache));
+	return (cache);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*readed;
+	static char	*cache;
 	char		*buffer;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if ((readed && !ft_strchr(readed, '\n')) || !readed)
+	if ((cache && !ft_strchr(cache, '\n')) || !cache)
 	{
 		buffer = malloc(BUFFER_SIZE + 1 * sizeof(char));
 		if (!buffer)
-			return (reset_readed(&readed));
+			return (reset_cache(&cache));
 		buffer[0] = '\0';
-		readed = next_reading(fd, readed, buffer);
+		cache = read_next_line(fd, cache, buffer);
 		free(buffer);
+		if (!cache)
+			return (NULL);
 	}
-	if (!readed)
-		return (NULL);
-	line = build(&readed);
+	line = build_line(&cache);
 	if (!line)
 		return (NULL);
 	return (line);
