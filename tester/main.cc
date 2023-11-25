@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 23:01:50 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/18 23:39:27 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:58:26 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	main(int argc, char *argv[])
 	int		fd;
 	char	*ptr;
 	
-	if (argc == 1)
-	{
-		printf("Enter name file");
-		return (1);
-	}
+    if (argc <= 1)
+    {
+        printf("Usage: %s file1", argv[0]);
+        return 1;
+    }
 	fd = open(argv[1], O_RDONLY);
 	if(fd == ERROR)
 		return(1);
@@ -36,6 +36,5 @@ int	main(int argc, char *argv[])
 	}
 	printf("%s", ptr);
 	close(fd);
-	// system("leaks -q a.out");
 	return (0);
 }

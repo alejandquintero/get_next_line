@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:55:24 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/24 23:30:36 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:21:00 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*read_next_line(int fd, char *cache, char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*cache[1024];
+	static char	*cache[OPEN_MAX];
 	char		*buffer;
 	char		*line;
 

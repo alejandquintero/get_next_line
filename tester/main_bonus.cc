@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:05:11 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/24 23:15:38 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/25 20:02:16 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,71 @@
 # include "get_next_line_bonus.h"
 # include <stdio.h>
 
+int main(int argc, char *argv[])
+{
+	int	i;
+	int	*fds;
+	char **ptrs; 
+    int anyFileHasLine;
+
+    if (argc <= 1)
+    {
+        printf("Usage: %s file1 file2 file3 ...", argv[0]);
+        return 1;
+    }
+    fds = (int *)malloc((argc - 1) * sizeof(int));
+    if (fds == NULL)
+    {
+        perror("Error allocating memory for file descriptors");
+        return 1;
+    }
+	i = 0;
+    while (i < argc - 1)
+    {
+        fds[i] = open(argv[i + 1], O_RDONLY);
+        if (fds[i] == ERROR)
+        {
+            perror("Error opening file");
+            free(fds);
+            return 1;
+        }
+		i++;
+    }
+   	ptrs = (char **)malloc((argc - 1) * sizeof(char *));
+    if (ptrs == NULL)
+    {
+        perror("Error allocating memory for pointers");
+        free(fds);
+        return 1;
+    }
+    do
+    {
+        anyFileHasLine = 0;
+        for (int i = 0; i < argc - 1; ++i)
+        {
+            ptrs[i] = get_next_line(fds[i]);
+            if (ptrs[i] != NULL)
+                anyFileHasLine = 1;
+        }
+        for (int i = 0; i < argc - 1; ++i)
+        {
+            printf("file %d: %s", i + 1, ptrs[i]);
+            if (ptrs[i] != NULL)
+            {
+                free(ptrs[i]);
+            }
+        }
+    } while (anyFileHasLine);
+    for (int i = 0; i < argc - 1; ++i)
+    {
+        close(fds[i]);
+    }
+    free(ptrs);
+    free(fds);
+    return 0;
+}
+
+/*
 int	main(int argc, char *argv[])
 {
 	int		fd1;
@@ -63,4 +128,4 @@ int	main(int argc, char *argv[])
 	close(fd3);
 	// system("leaks -q a.out");
 	return (0);
-}
+}*/

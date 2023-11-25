@@ -6,7 +6,7 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 22:55:20 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/24 22:56:34 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:20:51 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 char	*get_next_line(int fd);
 char	*read_next_line(int fd, char *cache, char *buffer);
