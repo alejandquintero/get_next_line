@@ -6,12 +6,12 @@
 /*   By: aquinter <aquinter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:05:11 by aquinter          #+#    #+#             */
-/*   Updated: 2023/11/25 20:02:16 by aquinter         ###   ########.fr       */
+/*   Updated: 2023/11/25 23:01:09 by aquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <fcntl.h>
-# include "get_next_line_bonus.h"
+# include "gnl/get_next_line_bonus.h"
 # include <stdio.h>
 
 int main(int argc, char *argv[])
